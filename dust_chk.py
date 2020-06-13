@@ -34,10 +34,10 @@ CHECKSUM               = Checksum code
 import serial
 from PMS7003 import PMS7003
 from datetime import datetime
-import pandas as pd
+
 
 dust = PMS7003()
-dust_date = pd.DataFrame(
+
   
 # Baud Rate
 Speed = 9600
@@ -56,7 +56,7 @@ import time
 import csv
 
 while True:
-  ser.flushInput)
+  
   csvfile= open("dust.csv", "a", newline="")
   dt = datetime.now()
   df =dt.strftime("%Y-%m-%d %H:%M:%S")
@@ -78,4 +78,4 @@ while True:
   else:
     print ("data read Err")
 
-  ser.close()
+ser.close()
