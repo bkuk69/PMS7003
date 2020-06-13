@@ -1,8 +1,8 @@
 """
 *******************************************
 * PMS7003 데이터 수신 프로그램 import 예제
-* 수정 : 2018. 08. 27
-* 제작 : eleparts 부설연구소
+* 수정 : 2020. 06. 13
+* 제작 : 구병국
 * SW ver. 1.0.1
 *******************************************
 
@@ -33,9 +33,12 @@ CHECKSUM               = Checksum code
 
 import serial
 from PMS7003 import PMS7003
+from datetime import datetime
+import pandas as pd
 
 dust = PMS7003()
-
+dust_date = pd.DataFrame(
+  
 # Baud Rate
 Speed = 9600
 
@@ -44,23 +47,35 @@ USB0 = '/dev/ttyUSB0'
 UART = '/dev/ttyAMA0'
 
 # USE PORT
-SERIAL_PORT = UART
+SERIAL_PORT = USB0
  
 #serial setting
 ser = serial.Serial(SERIAL_PORT, Speed, timeout = 1)
+from datetime import datetime
+import time
+import csv
+
+while True:
+  ser.flushInput)
+  csvfile= open("dust.csv", "a", newline="")
+  dt = datetime.now()
+  df =dt.strftime("%Y-%m-%d %H:%M:%S")
+  buffer = ser.read(1024)
 
 
-buffer = ser.read(1024)
+  if(dust.protocol_chk(buffer)):
+    data = dust.unpack_data(buffer)
+    
+    print ("PMS 7003 dust data")
+    print ("PM 1.0 : %s" % (data[dust.DUST_PM1_0_ATM]))
+    print ("PM 2.5 : %s" % (data[dust.DUST_PM2_5_ATM]))
+    print ("PM 10.0 : %s" % (data[dust.DUST_PM10_0_ATM]))
+    dust_data = [df, data[dust.DUST_PM1_0_ATM], data[dust.DUST_PM2_5_ATM], data[dust.DUST_PM10_0_ATM]]
+    csvwriter = csv.writer(csvfile)
+    csvwriter.writerow(dust_data)
+    csvfile.close()
+    time.sleep(5)
+  else:
+    print ("data read Err")
 
-if(dust.protocol_chk(buffer)):
-  data = dust.unpack_data(buffer)
-
-  print ("PMS 7003 dust data")
-  print ("PM 1.0 : %s" % (data[dust.DUST_PM1_0_ATM]))
-  print ("PM 2.5 : %s" % (data[dust.DUST_PM2_5_ATM]))
-  print ("PM 10.0 : %s" % (data[dust.DUST_PM10_0_ATM]))
-
-else:
-  print ("data read Err")
-
-ser.close()
+  ser.close()

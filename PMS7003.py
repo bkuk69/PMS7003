@@ -1,7 +1,7 @@
 """
 * PMS7003 데이터 수신 프로그램
-* 수정 : 2018. 11. 19
-* 제작 : eleparts 부설연구소
+* 수정 : 2020. 6. 13
+* 제작 : 구병국
 * SW ver. 1.0.2
 
 > 관련자료
@@ -150,7 +150,7 @@ USB0 = '/dev/ttyUSB0'
 UART = '/dev/ttyAMA0'
 
 # USE PORT
-SERIAL_PORT = UART
+SERIAL_PORT = USB0
 
 # Baud Rate
 Speed = 9600
@@ -158,6 +158,7 @@ Speed = 9600
 
 # example
 if __name__=='__main__':
+  
 
   #serial setting 
   ser = serial.Serial(SERIAL_PORT, Speed, timeout = 1)
